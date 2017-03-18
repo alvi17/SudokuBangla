@@ -70,6 +70,9 @@ public class FolderListActivity extends ListActivity {
 	private long mRenameFolderID;
 	private long mDeleteFolderID;
 
+
+    //Banner: ca-app-pub-6508526601344465/4115437630
+    //FUll screen: ca-app-pub-6508526601344465/5592170834
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
