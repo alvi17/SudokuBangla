@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string-array name="game_states">
-		<item>শুরু করা হয়নি</item>
-		<item>খেলা হচ্ছে</item>
-		<item>সল্ভড</item>
-	</string-array>
-    <string-array name="game_levels">
-        <item>সহজ</item>
-        <item>মিডিয়াম</item>
-        <item>কঠিন</item>
-    </string-array>
-	<string-array name="theme_names">
+    <string-array name="theme_names">
 		<item>Default</item>
 		<item>Paper I</item>
 		<item>Paper II</item>
