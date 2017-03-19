@@ -37,7 +37,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 
 import alvi17.sudokubangla.R;
 import alvi17.sudokubangla.db.SudokuDatabase;
@@ -98,6 +105,13 @@ public class SudokuPlayActivity extends Activity {
 	private boolean mFillInNotesEnabled = false;
 
 	private HintsQueue mHintsQueue;
+
+	AdView adView;
+	AdRequest adRequest;
+
+	LinearLayout linearLayout;
+	InterstitialAd interstitialAd;
+	boolean adLoad=false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -169,6 +183,35 @@ public class SudokuPlayActivity extends Activity {
 		mIMPopup = mIMControlPanel.getInputMethod(IMControlPanel.INPUT_METHOD_POPUP);
 		mIMSingleNumber = mIMControlPanel.getInputMethod(IMControlPanel.INPUT_METHOD_SINGLE_NUMBER);
 		mIMNumpad = mIMControlPanel.getInputMethod(IMControlPanel.INPUT_METHOD_NUMPAD);
+
+		linearLayout=(LinearLayout)findViewById(R.id.linearLayout);
+
+		adView=new AdView(this);
+		adRequest=new AdRequest.Builder().build();
+		adView.setAdSize(AdSize.BANNER);
+		adView.setAdUnitId("ca-app-pub-6508526601344465/4115437630");
+
+		initFullScreenAd();
+	}
+
+	public void initFullScreenAd()
+	{
+		interstitialAd=new  InterstitialAd(this);
+		interstitialAd.setAdUnitId("ca-app-pub-6508526601344465/5592170834");
+		AdRequest aRequest = new AdRequest.Builder().addTestDevice("0754C239B1E2E19421FDE46BCEFB8855").build();
+
+		// Begin loading your interstitial.
+		interstitialAd.loadAd(aRequest);
+
+		interstitialAd.setAdListener(
+				new AdListener() {
+					@Override
+					public void onAdLoaded() {
+						super.onAdLoaded();
+						adLoad=true;
+					}
+				}
+		);
 	}
 
 	@Override
@@ -211,6 +254,28 @@ public class SudokuPlayActivity extends Activity {
 		mIMControlPanelStatePersister.restoreState(mIMControlPanel);
 
 		updateTime();
+
+		adView.loadAd(adRequest);
+		if(linearLayout.getChildCount()>0)
+		{
+			linearLayout.removeAllViews();
+		}
+		linearLayout.addView(adView);
+	}
+
+	@Override
+	public void onBackPressed() {
+
+		if(adLoad)
+		{
+			interstitialAd.show();
+			adLoad=false;
+		}
+		else
+		{
+			initFullScreenAd();
+		}
+		super.onBackPressed();
 	}
 
 	@Override
